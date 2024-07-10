@@ -1,0 +1,1 @@
+capi-jsgen works on a file called `baseschema.json`. It describes the base schema that capi-jsgen should work on. This directory contains a tool that helps you to build a baseschema.json file. The tool starts with the full json-schema of the Cluster-API Cluster object and applies the json-patches in `defaultpatch.json`.

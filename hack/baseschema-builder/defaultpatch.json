@@ -1,0 +1,112 @@
+[
+    { "op": "remove",  "path":  "/properties/metadata/properties/managedFields" },
+    { "op": "remove",  "path": "/properties/metadata/properties/finalizers" },
+    { "op": "remove",  "path": "/properties/metadata/properties/ownerReferences" },
+    { "op": "remove",  "path": "/properties/metadata/properties/annotations" },
+    { "op": "remove",  "path": "/properties/metadata/properties/deletionGracePeriodSeconds" },
+    { "op": "remove",  "path": "/properties/metadata/properties/deletionTimestamp" },
+    { "op": "remove",  "path": "/properties/metadata/properties/creationTimestamp" },
+    { "op": "remove",  "path": "/properties/metadata/properties/generation"},
+    { "op": "remove",  "path": "/properties/metadata/properties/resourceVersion" },
+    { "op": "remove",  "path": "/properties/metadata/properties/uid" },
+    { "op": "remove",  "path": "/properties/metadata/properties/selfLink" },
+    { "op": "remove",  "path": "/properties/metadata/properties/generateName" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/variables" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/metadata" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/machineHealthCheck" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/nodeDrainTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/nodeVolumeDetachTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/controlPlane/properties/nodeDeletionTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machinePools" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/variables" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/machineHealthCheck" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/metadata" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/nodeDrainTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/nodeVolumeDetachTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/nodeDeletionTimeout" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/minReadySeconds" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/items/properties/strategy" },
+    { "op": "remove",  "path": "/properties/spec/properties/topology/properties/rolloutAfter" },
+    { "op": "remove",  "path": "/properties/spec/properties/infrastructureRef" },
+    { "op": "remove",  "path": "/properties/spec/properties/controlPlaneRef" },
+    { "op": "remove",  "path": "/properties/spec/properties/controlPlaneEndpoint" },
+    { "op": "remove",  "path": "/properties/spec/properties/clusterNetwork/properties/apiServerPort" },
+    { "op": "remove",  "path": "/properties/spec/properties/paused" },
+    { "op": "remove",  "path": "/properties/status" },
+    {
+        "op": "add",
+        "path": "/properties/apiVersion/default",
+        "value": "cluster.x-k8s.io/v1beta1"
+    },
+    {
+        "op": "add",
+        "path": "/properties/kind/default",
+        "value": "Cluster"
+    },
+    {
+        "op": "add",
+        "path": "/properties/metadata/properties/labels/properties",
+        "value": {
+            "managed-secret": {
+                "type": "string",
+                "default": "cloud-config"
+            }
+        }
+    },
+    {
+        "op": "add",
+        "path": "/properties/metadata/properties/namespace/default",
+        "value": "playground0"
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/clusterNetwork/properties/serviceDomain/default",
+        "value": "cluster.local"
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/clusterNetwork/properties/pods/properties/cidrBlocks/default",
+        "value": [
+            "192.168.0.0/16"
+        ]
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/clusterNetwork/properties/services/properties/cidrBlocks/default",
+        "value": [
+            "10.96.0.0/16"
+        ]
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/topology/properties/version/default",
+        "value": "v1.29.3"
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/topology/properties/class/default",
+        "value": "scs-v1"
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/topology/properties/controlPlane/properties/replicas/default",
+        "value": "1"
+    },
+    {
+        "op": "add",
+        "path": "/properties/spec/properties/topology/properties/workers/properties/machineDeployments/default",
+        "value": [
+            {
+                "class": "scs-v1",
+                "failureDomain": "nova",
+                "name": "scs-v1",
+                "replicas": 3
+            }
+            ]
+    },
+    {
+        "op": "replace",
+        "path": "/properties/spec/properties/topology/properties/variables/items",
+        "value": []
+    }
+]
