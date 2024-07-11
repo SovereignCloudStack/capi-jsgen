@@ -1,13 +1,20 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"log/slog"
 	"net/http"
 	"os"
 )
 
+var (
+	localMode bool
+)
+
 func init() {
+	flag.BoolVar(&localMode, "local", false, "run in local mode")
+	flag.Parse()
 	// no date, no time, no nothing
 	log.SetFlags(0)
 	// for dev purposes

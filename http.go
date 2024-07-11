@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
+	"os"
 	"sigs.k8s.io/cluster-api/api/v1beta1"
 )
 
@@ -18,9 +19,15 @@ func configureSchemaBuilder(refSb *SchemaBuilder) {
 func getNamespaces() ([]byte, error) {
 	var ccListResource v1beta1.ClusterClassList
 	var ccPerNs = make(map[string][]string)
-
-	//ccFileContent, err := os.ReadFile(clusterClassesDemoFile) // can be used for development
-	ccFileContent, err := getNamespacesFromK8s() // live http-request equivalent
+	var (
+		ccFileContent []byte
+		err           error
+	)
+	if localMode {
+		ccFileContent, err = os.ReadFile(clusterClassesDemoFile)
+	} else {
+		ccFileContent, err = getNamespacesFromK8s()
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -41,8 +48,15 @@ func getNamespaces() ([]byte, error) {
 // and afterwards builds a customized ClusterSchema based on the settings in the schemabuilder
 func getClusterSchema(namespace, clusterclass string) ([]byte, error) {
 	var ccResource v1beta1.ClusterClass
-	//ccFileContent, err := os.ReadFile("data/demo-clusterclass.json") // can be used for development
-	ccFileContent, err := getClusterClassFromK8s(namespace, clusterclass)
+	var (
+		ccFileContent []byte
+		err           error
+	)
+	if localMode {
+		ccFileContent, err = os.ReadFile("data/demo-clusterclass.json")
+	} else {
+		ccFileContent, err = getClusterClassFromK8s(namespace, clusterclass)
+	}
 	if err != nil {
 		return nil, err
 	}

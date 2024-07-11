@@ -1,4 +1,4 @@
-module js-gen
+module capi-jsgen
 
 go 1.22.0
 
