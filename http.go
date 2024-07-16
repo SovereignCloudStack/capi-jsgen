@@ -23,7 +23,7 @@ func getNamespaces() ([]byte, error) {
 		ccFileContent []byte
 		err           error
 	)
-	if localMode {
+	if *localMode {
 		ccFileContent, err = os.ReadFile(clusterClassesDemoFile)
 	} else {
 		ccFileContent, err = getNamespacesFromK8s()
@@ -52,7 +52,7 @@ func getClusterSchema(namespace, clusterclass string) ([]byte, error) {
 		ccFileContent []byte
 		err           error
 	)
-	if localMode {
+	if *localMode {
 		ccFileContent, err = os.ReadFile("data/demo-clusterclass.json")
 	} else {
 		ccFileContent, err = getClusterClassFromK8s(namespace, clusterclass)

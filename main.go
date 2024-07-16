@@ -9,11 +9,13 @@ import (
 )
 
 var (
-	localMode bool
+	localMode    = flag.Bool("local", false, "run in local mode")
+	requiredOnly = flag.Bool("required", false, "only include required variables into the schema")
+	listen       = flag.String("listen", ":8080", "listen address")
+	version      = "dev"
 )
 
 func init() {
-	flag.BoolVar(&localMode, "local", false, "run in local mode")
 	flag.Parse()
 	// no date, no time, no nothing
 	log.SetFlags(0)
@@ -22,6 +24,8 @@ func init() {
 }
 
 func main() {
+	//Hello
+	slog.Info("Starting capi-jsgen", "version", version)
 	// read baseSchema from File
 	baseSchema, err := os.ReadFile("data/baseschema.json")
 	if err != nil {
@@ -30,7 +34,7 @@ func main() {
 	}
 
 	configureSchemaBuilder(&SchemaBuilder{
-		requiredOnly:           true,
+		requiredOnly:           *requiredOnly,
 		opSkeleton:             varOpSkeleton,
 		setDefaultNamespace:    true,
 		setDefaultClusterClass: true,
@@ -40,5 +44,6 @@ func main() {
 
 	http.HandleFunc("GET /namespaces", handleHTTPNamespaces)
 	http.HandleFunc("GET /clusterschema/{namespace}/{clusterclass}", handleHTTPClusterSchema)
-	_ = http.ListenAndServe(":8080", nil)
+	slog.Info("Starting HTTP server on", "address", *listen)
+	_ = http.ListenAndServe(*listen, nil)
 }
