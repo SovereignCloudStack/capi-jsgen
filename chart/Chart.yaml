@@ -1,0 +1,4 @@
+apiVersion: v2
+name: capi-jsgen
+version: 1.0.0
+description: A minimal helm-chart to deploy capi-jsgen with a service. You can not do much, but enough.

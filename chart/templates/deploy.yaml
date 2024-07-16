@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: capi-jsgen
+  name: capi-jsgen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: capi-jsgen
+  template:
+    metadata:
+      labels:
+        app: capi-jsgen
+    spec:
+      containers:
+      - image: {{ .Values.image }}
+        name: capi-jsgen
+        ports:
+        - containerPort: 3000

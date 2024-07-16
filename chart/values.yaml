@@ -1,0 +1,2 @@
+# The image that will be used in the deployment
+image: registry.scs.community/cluster-gen/capi-jsgen:0.0.1
