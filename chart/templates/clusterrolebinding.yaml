@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+# This cluster role binding allows capi-jsgen to read all clusterclasses in all namespaces
+kind: ClusterRoleBinding
+metadata:
+  name: capi-jsgen-clusterclasses
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: capi-jsgen-cr
+  apiGroup: rbac.authorization.k8s.io

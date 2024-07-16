@@ -4,8 +4,6 @@ import (
 	"io"
 	"k8s.io/client-go/rest"
 	"log/slog"
-	"net/http"
-	"os"
 )
 
 // getFromK8s tries to access an autodetect the k8s apiserver if this program runs inside a cluster. If it as able to
@@ -13,22 +11,20 @@ import (
 // []byte
 func getFromK8s(path string) ([]byte, error) {
 	// creates the in-cluster config
-	config := rest.Config{
-		Host: "https://moin.k8s.scs.community",
-	}
-	/*
-		config, err := rest.InClusterConfig()
-		if err != nil {
-			slog.Error("getting kubernetes config failed", "err", err)
-			os.Exit(1)
-		}
-	*/
-	slog.Info("HTTP request", "host", config.Host, "path", path)
-	resp, err := http.Get(config.Host + path)
+	config, err := rest.InClusterConfig()
 	if err != nil {
-		slog.Error("http request failed", "err", err)
-		os.Exit(1)
+		return nil, err
 	}
+	client, err := rest.HTTPClientFor(config)
+	if err != nil {
+		return nil, err
+	}
+	slog.Info("Issuing http-request GET", "host", config.Host, "path", path)
+	resp, err := client.Get(config.Host + path)
+	if err != nil {
+		return nil, err
+	}
+
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -36,7 +32,6 @@ func getFromK8s(path string) ([]byte, error) {
 		}
 	}(resp.Body)
 	return io.ReadAll(resp.Body)
-
 }
 
 func getNamespacesFromK8s() ([]byte, error) {
@@ -44,5 +39,5 @@ func getNamespacesFromK8s() ([]byte, error) {
 }
 
 func getClusterClassFromK8s(namespace, name string) ([]byte, error) {
-	return getFromK8s("/apis/cluster.x-k8s.io/v1beta1/namespaces/" + namespace + "/clustersclasses/" + name)
+	return getFromK8s("/apis/cluster.x-k8s.io/v1beta1/namespaces/" + namespace + "/clusterclasses/" + name)
 }

@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: capi-jsgen-cr
+rules:
+  - apiGroups:
+      - cluster.x-k8s.io
+    resources:
+      - clusterclasses
+    verbs:
+      - get
+      - list
