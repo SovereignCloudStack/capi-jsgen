@@ -17,6 +17,7 @@ var (
 	sbDefaultNamespace    = flag.Bool("default-namespace", true, "When set, the namespace of the clusterclass is used as default for .metadata.namespace")
 	sbDefaultClusterClass = flag.Bool("default-clusterclass", true, "When set, the clusterclass is used as default for .spec.topology.class")
 	sbDefaultMachineClass = flag.Bool("default-machineclass", true, "When set, the clusterclass name is used as default for .spec.topology.workers.machineDeployments.class")
+	cacheTime             = flag.String("cache", "1h", "Duration how long API-responses are cached")
 
 	version = "dev"
 
@@ -50,7 +51,7 @@ func main() {
 	}
 
 	// setup HTTP response cache
-	configureCache()
+	configureCache(*cacheTime)
 
 	http.Handle("GET /namespaces", cacheClient.Middleware(http.HandlerFunc(handleHTTPNamespaces)))
 	http.Handle("GET /clusterschema/{namespace}/{clusterclass}", cacheClient.Middleware(http.HandlerFunc(handleHTTPClusterSchema)))

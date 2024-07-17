@@ -13,7 +13,7 @@ import (
 
 const clusterClassesDemoFile = "data/clusterclasses.json"
 
-func configureCache() {
+func configureCache(cacheTTL string) {
 	memcache, err := memory.NewAdapter(
 		memory.AdapterWithAlgorithm(memory.LRU),
 		memory.AdapterWithCapacity(10000),
@@ -23,9 +23,15 @@ func configureCache() {
 		os.Exit(1)
 	}
 
+	ttl, err := time.ParseDuration(cacheTTL)
+	if err != nil {
+		slog.Error("parsing duration", "error", err)
+		os.Exit(1)
+	}
+
 	cacheClient, err = cache.NewClient(
 		cache.ClientWithAdapter(memcache),
-		cache.ClientWithTTL(time.Hour),
+		cache.ClientWithTTL(ttl),
 	)
 	if err != nil {
 		slog.Error("creating cache client", "error", err)
