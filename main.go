@@ -42,8 +42,10 @@ func main() {
 		baseSchema:             baseSchema,
 	})
 
-	http.HandleFunc("GET /namespaces", handleHTTPNamespaces)
-	http.HandleFunc("GET /clusterschema/{namespace}/{clusterclass}", handleHTTPClusterSchema)
+	configureCache()
+
+	http.Handle("GET /namespaces", cacheClient.Middleware(http.HandlerFunc(handleHTTPNamespaces)))
+	http.Handle("GET /clusterschema/{namespace}/{clusterclass}", cacheClient.Middleware(http.HandlerFunc(handleHTTPClusterSchema)))
 	slog.Info("Starting HTTP server on", "address", *listen)
 	_ = http.ListenAndServe(*listen, nil)
 }

@@ -2,18 +2,42 @@ package main
 
 import (
 	"encoding/json"
+	cache "github.com/victorspringer/http-cache"
+	"github.com/victorspringer/http-cache/adapter/memory"
 	"log/slog"
 	"net/http"
 	"os"
 	"sigs.k8s.io/cluster-api/api/v1beta1"
+	"time"
 )
 
 var sb SchemaBuilder
+var cacheClient *cache.Client
 
 const clusterClassesDemoFile = "data/clusterclasses.json"
 
 func configureSchemaBuilder(refSb *SchemaBuilder) {
 	sb = *refSb
+}
+
+func configureCache() {
+	memcache, err := memory.NewAdapter(
+		memory.AdapterWithAlgorithm(memory.LRU),
+		memory.AdapterWithCapacity(10000),
+	)
+	if err != nil {
+		slog.Error("creating memory cache", "error", err)
+		os.Exit(1)
+	}
+
+	cacheClient, err = cache.NewClient(
+		cache.ClientWithAdapter(memcache),
+		cache.ClientWithTTL(time.Hour),
+	)
+	if err != nil {
+		slog.Error("creating cache client", "error", err)
+		os.Exit(1)
+	}
 }
 
 func getNamespaces() ([]byte, error) {
