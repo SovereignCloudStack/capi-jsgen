@@ -2,7 +2,7 @@
 The tool `capi-jsgen` creates json-schemas for cluster-API Clusters which reference a ClusterClass. The primary use-case for these schemas is to create UI-Forms out of it, but they can be used in other contexts as well.
 
 # Concept
-The generic Cluster specification is merged with each ClusterClass to create specialized versions of the Cluster specification. The tailoring takes place by copying the variable schemas from a ClusterClass to the generic Cluster spec. Additional to that fields that are not wanted in a UI (`.status`, `.metadata.gereration`, ...) are deleted and some defaults (`.spec.topology.class` for example) are set.
+The generic Cluster specification is merged with a ClusterClass to create a specialized version of the Cluster specification. The tailoring takes place by copying the variable schemas from a ClusterClass to the generic Cluster spec. Additional to that, `capi-jsgen` can set default values for the ClusterClass, the MachineDeployment class and the namespace. Most likely you do not want certain fields like  `.status` or `.metadata.gereration` in your UI. It is possible to remove or customize this by changing the "base schema". This is the schema that `capi-jsgen` works on to create specialized cluster-schemas. If you want to create a custom baseschema have a look at the [baseschema-builder](hack/baseschema-builder) it contains a good starting point to create your custom baseschema.
 ```
      generic cluster-spec
 +-----------------------------+
@@ -30,6 +30,28 @@ The generic Cluster specification is merged with each ClusterClass to create spe
 +-----------------------------+
 ```
 Notice that the above graphic recklessly mixes specification (Cluster) and instances (ClusterClass). It is not correct in every detail and only meant to get a quick idea of the concept.
+# Usage
+```
+Usage of ./capi-jsgen:
+  -baseschema string
+        path to baseschema file (default "data/baseschema.json")
+  -cache string
+        Duration how long API-responses are cached (default "1h")
+  -default-clusterclass
+        When set, the clusterclass is used as default for .spec.topology.class (default true)
+  -default-machineclass
+        When set, the clusterclass name is used as default for .spec.topology.workers.machineDeployments.class (default true)
+  -default-namespace
+        When set, the namespace of the clusterclass is used as default for .metadata.namespace (default true)
+  -listen string
+        listen address (default ":8080")
+  -local
+        run in local mode
+  -required
+        only include required variables into the schema
+
+```
+# Helm-Chart
 # API
 There are two API endpoints that can be consumed. The first one offers information about the namespaces and the offered cluster-classes in the cluster. The second API offers Cluster schemas that are specific for a clusterclass in a namespace.
 ## `GET /clusterclasses`
