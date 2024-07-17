@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+{{- if .Values.ingress.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
+{{- end }}
+{{- if .Values.ingress.dnsAnnotation }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.hostname }}
+{{- end }}
+  name: capi-jsgen
+spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+{{- end }}
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: capi-jsgen
+            port:
+              number: 8080
+        pathType: ImplementationSpecific
+{{- if .Values.ingress.clusterIssuer }}
+  tls:
+  - hosts:
+    - {{ .Values.ingress.hostname }}
+    secretName: capi-jsgen-tls
+{{- end }}
+{{- end }}

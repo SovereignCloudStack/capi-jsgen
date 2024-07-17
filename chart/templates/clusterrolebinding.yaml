@@ -5,7 +5,7 @@ metadata:
   name: capi-jsgen-clusterclasses
 subjects:
   - kind: ServiceAccount
-    name: default
+    name: capi-jsgen-sa
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
