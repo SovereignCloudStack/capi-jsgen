@@ -11,14 +11,7 @@ import (
 	"time"
 )
 
-var sb SchemaBuilder
-var cacheClient *cache.Client
-
 const clusterClassesDemoFile = "data/clusterclasses.json"
-
-func configureSchemaBuilder(refSb *SchemaBuilder) {
-	sb = *refSb
-}
 
 func configureCache() {
 	memcache, err := memory.NewAdapter(
