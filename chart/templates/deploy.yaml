@@ -14,6 +14,7 @@ spec:
       labels:
         app: capi-jsgen
     spec:
+      serviceAccountName: capi-jsgen-sa
       containers:
       - image: {{ .Values.image }}
         name: capi-jsgen
