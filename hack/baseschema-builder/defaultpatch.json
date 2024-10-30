@@ -157,6 +157,11 @@
     },
     {
         "op": "add",
+        "path": "/properties/metadata/required",
+        "value": ["name","namespace"]
+    },
+    {
+        "op": "add",
         "path": "/properties/metadata/properties/namespace/default",
         "value": "playground0"
     },
